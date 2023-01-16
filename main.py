@@ -28,16 +28,22 @@ for home in homes:
     square_feet = extract_text(home, 'pc-meta-sqft')
     acre_lot = extract_text(home, 'pc-meta-sqftlot')
 
-
-    print(f'''
-    {addresses}
-    Status: {status_texts}
-    Price : {prices}
-    {beds} {baths}
-    {square_feet} {acre_lot} 
-    ''')
+    print(f'{addresses}')  # Changed the prints again for better alignment still need to work on the spacing for the houses that dont list any of the 4 specific variables
+    print(f'Status: {status_texts}')
+    print(f'Price: {prices}')
+    print(f'{beds} {baths}')
+    print(f'{square_feet} {acre_lot}')
 
     print('')
+
+    # print(f'''
+    # {addresses}
+    # Status: {status_texts}
+    # Price : {prices}
+    # {beds} {baths}
+    # {square_feet} {acre_lot} 
+    # ''')
+
 
 
 
