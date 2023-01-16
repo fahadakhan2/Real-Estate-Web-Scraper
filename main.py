@@ -2,6 +2,15 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+# Function for extracting text for the variables beds, baths, square_foot, and acre_lot
+# that some listings don't include these specific variables
+def extract_text(home, attr):
+    element = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': attr})
+    if element is not None:
+        return element.text
+    else:
+        return ''
+
 
 # Start a web driver
 driver = webdriver.Chrome()
@@ -14,31 +23,11 @@ for home in homes:
     addresses = home.find('div', class_ = 'jsx-11645185 address ellipsis srp-page-address srp-address-redesign').text
     status_texts = home.find('span', class_ = 'jsx-3853574337 statusText').text
     prices = home.find('span', attrs={'class': 'Price__Component-rui__x3geed-0 gipzbd', 'data-label': 'pc-price'}).text
-    
-    beds = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': 'pc-meta-beds'})
-    if beds is not None:
-        beds = beds.text
-    else:
-        beds = ''
+    beds = extract_text(home, 'pc-meta-beds')
+    baths = extract_text(home, 'pc-meta-baths')
+    square_feet = extract_text(home, 'pc-meta-sqft')
+    acre_lot = extract_text(home, 'pc-meta-sqftlot')
 
-    baths = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': 'pc-meta-baths'})
-    if baths is not None:
-        baths = baths.text
-    else:
-        baths = ''
-
-    # For the postings that don't include square_feet or acre_lot
-    square_feet = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': 'pc-meta-sqft'})
-    if square_feet is not None:  
-        square_feet = square_feet.text
-    else:
-        square_feet = ''
-
-    acre_lot = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': 'pc-meta-sqftlot'})
-    if acre_lot is not None:
-        acre_lot = acre_lot.text
-    else:
-        acre_lot = ''
 
     print(addresses, status_texts, prices, beds, baths, square_feet, acre_lot)
 
