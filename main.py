@@ -29,7 +29,13 @@ for home in homes:
     acre_lot = extract_text(home, 'pc-meta-sqftlot')
 
 
-    print(addresses, status_texts, prices, beds, baths, square_feet, acre_lot)
+    print(f'''
+    {addresses}
+    Status: {status_texts}
+    Price : {prices}
+    {beds} {baths}
+    {square_feet} {acre_lot} 
+    ''')
 
     print('')
 
