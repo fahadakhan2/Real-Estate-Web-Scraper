@@ -2,8 +2,11 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
-import time
 from tabulate import tabulate
+import matplotlib.pyplot as plt
+import time
+
+
 
 
 # Filtration System
@@ -67,34 +70,24 @@ def find_houses():
     houses_dataframe = pd.DataFrame(houses_list)
     return houses_dataframe
 
+    
 
 
 if __name__ == '__main__':
     while True:
         df = find_houses()
+
+        # Write tabulate to results.csv
         with open("results.csv", "w") as f:
             f.write(tabulate(df, headers='keys', tablefmt='psql'))
+
+        # Create a bar chart of house prices
+        df.plot(kind='bar', x='Address', y='$Price', colorbar='green' legend=False)
+        plt.xlabel('Address')
+        plt.ylabel('Price')
+        plt.title('House Prices')
+        plt.show()
+
         time_wait = 10
         print(f'Waiting {time_wait} minutes...')
         time.sleep(time_wait * 60)
-
-
-
-
-
-
-
-
-
-
-
-
-
-  # if beds:
-    #     print(f'{beds}')
-    # if baths:
-    #     print(f'{baths}')
-    # if square_feet:
-    #     print(f'{square_feet}')
-    # if acre_lot:
-    #     print(f'{acre_lot}')
