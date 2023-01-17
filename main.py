@@ -2,6 +2,8 @@
 # Video at 50 min
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from time import sleep
+import random
 
 # Function for extracting text for the variables beds, baths, square_foot, and acre_lot
 # that some listings don't include these specific variables
@@ -15,12 +17,13 @@ def extract_text(home, attr):
 # Start a web driver
 driver = webdriver.Chrome()
 driver.get('https://www.realtor.com/realestateandhomes-search/Winnetka_IL')
+sleep_time = random.randint(2,5)
+sleep(sleep_time)
 html_text = driver.page_source # Get the HTML source code
 
 # Filtration System
-print('Input the minimum amount you want to buy a house like this -> 1000000 (for one million)')
-price_filter = input('>')
-price_filter = int(price_filter) #makes the input a floating point number
+print('Enter the amount you want to buy a house like this -> 1000000 (for a one million dollar house)')
+price_filter = int(input(''))
 print(f'Retrieving houses over {price_filter}')
 
 soup = BeautifulSoup(html_text, 'lxml')
@@ -38,6 +41,11 @@ for home in homes:
     acre_lot = extract_text(home, 'pc-meta-sqftlot')
     more_info_link = home.div.a['href'] # to get the href link for more information on each house
     
+
+    # Uncomment first one if you want houses under the value entered
+    # if prices <= price_filter:
+
+    # Uncomment second one if you want houses over the value entered
     if prices >= price_filter:
         print(f'{addresses}') 
         print(f'Status: {status_texts}')
@@ -48,6 +56,7 @@ for home in homes:
         if square_feet or acre_lot:
             print(f'{square_feet} {acre_lot}')
         print(f'More Info: {more_info_link}')
+
 
     
         print('')
