@@ -27,19 +27,18 @@ for home in homes:
     baths = extract_text(home, 'pc-meta-baths')
     square_feet = extract_text(home, 'pc-meta-sqft')
     acre_lot = extract_text(home, 'pc-meta-sqftlot')
-    
-    #to get the href link for more information on each house
-    a_tag = soup.find('a', class_ = 'jsx-1534613990 card-anchor')
-    more_info_link = a_tag.get("href")
+    more_info_link = home.div.a['href'] # to get the href link for more information on each house
+   
 
-    # print(f'{addresses}')  #  work on the spacing for the houses that dont list any of the 4 specific variables
-    # print(f'Status: {status_texts}')
-    # print(f'Price: {prices}')
-    # if beds or baths:
-    #     print(f'{beds} {baths}', end=' ')
-    #     print()
-    # if square_feet or acre_lot:
-    #     print(f'{square_feet} {acre_lot}')
+    print(f'{addresses}') 
+    print(f'Status: {status_texts}')
+    print(f'Price: {prices}')
+    if beds or baths:
+        print(f'{beds} {baths}', end=' ')
+        print()
+    if square_feet or acre_lot:
+        print(f'{square_feet} {acre_lot}')
+    print(f'More Info: {more_info_link}')
 
   
     print('')
