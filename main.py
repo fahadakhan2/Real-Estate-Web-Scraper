@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
 import time
+from tabulate import tabulate
 
 
 # Filtration System
@@ -71,8 +72,8 @@ def find_houses():
 if __name__ == '__main__':
     while True:
         df = find_houses()
-        df.to_csv('houses.csv', index=False)
-        # print(df)
+        with open("results.csv", "w") as f:
+            f.write(tabulate(df, headers='keys', tablefmt='psql'))
         time_wait = 10
         print(f'Waiting {time_wait} minutes...')
         time.sleep(time_wait * 60)
