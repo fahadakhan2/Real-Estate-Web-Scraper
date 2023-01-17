@@ -1,4 +1,5 @@
 # Scraping Winnetka on realtor.com
+# Video at 50 min
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -10,7 +11,6 @@ def extract_text(home, attr):
         return element.text
     else:
         return ''
-
 
 # Start a web driver
 driver = webdriver.Chrome()
@@ -27,23 +27,21 @@ for home in homes:
     baths = extract_text(home, 'pc-meta-baths')
     square_feet = extract_text(home, 'pc-meta-sqft')
     acre_lot = extract_text(home, 'pc-meta-sqftlot')
+    
+    #to get the href link for more information on each house
+    a_tag = soup.find('a', class_ = 'jsx-1534613990 card-anchor')
+    more_info_link = a_tag.get("href")
 
-    print(f'{addresses}')  #  work on the spacing for the houses that dont list any of the 4 specific variables
-    print(f'Status: {status_texts}')
-    print(f'Price: {prices}')
-    if beds or baths:
-        print(f'{beds} {baths}', end=' ')
-        print()
-    if square_feet or acre_lot:
-        print(f'{square_feet} {acre_lot}')
-    # if beds:   //For having each variable on its own line for storing later in dataframe or base.
-    #     print(f'{beds}')
-    # if baths:
-    #     print(f'{baths}')
-    # if square_feet:
-    #     print(f'{square_feet}')
-    # if acre_lot:
-    #     print(f'{acre_lot}')
+    # print(f'{addresses}')  #  work on the spacing for the houses that dont list any of the 4 specific variables
+    # print(f'Status: {status_texts}')
+    # print(f'Price: {prices}')
+    # if beds or baths:
+    #     print(f'{beds} {baths}', end=' ')
+    #     print()
+    # if square_feet or acre_lot:
+    #     print(f'{square_feet} {acre_lot}')
+
+  
     print('')
 
 
@@ -56,3 +54,23 @@ for home in homes:
 
 # Close the driver
 driver.quit()
+
+
+
+
+
+
+
+
+
+
+
+
+  # if beds:   //For having each variable on its own line for storing later in dataframe or base.
+    #     print(f'{beds}')
+    # if baths:
+    #     print(f'{baths}')
+    # if square_feet:
+    #     print(f'{square_feet}')
+    # if acre_lot:
+    #     print(f'{acre_lot}')
