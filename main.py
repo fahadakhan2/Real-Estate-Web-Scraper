@@ -1,4 +1,3 @@
-# Scraping Winnetka on realtor.com
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
@@ -10,20 +9,21 @@ import time
 
 
 # Filtration System
+print('Enter the location you want to search (e.g. Winnetka_IL):')
+location = input('')
+
+
 print('Enter the amount you want to buy a house like this -> 1000000 (for a one million dollar house)')
 price_filter = int(input(''))
 print(f'Retrieving houses over {price_filter}')
 
-
-
 def find_houses():
     # Start a web driver
     driver = webdriver.Chrome('--ignore-certificate-errors')
-    driver.get('https://www.realtor.com/realestateandhomes-search/Winnetka_IL')
+    driver.get('https://www.realtor.com/realestateandhomes-search/{}'.format(location))
     html_text = driver.page_source # Get the HTML source code
 
     # Function for extracting text for the variables beds, baths, square_foot, and acre_lot
-    # that some listings don't include these specific variables
     def extract_text(home, attr):
         element = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': attr})
         if element is not None:
@@ -38,20 +38,16 @@ def find_houses():
     for home in homes: 
         addresses = home.find('div', class_ = 'jsx-11645185 address ellipsis srp-page-address srp-address-redesign').text
         status_texts = home.find('span', class_ = 'jsx-3853574337 statusText').text
-        
         prices = home.find('span', attrs={'class': 'Price__Component-rui__x3geed-0 gipzbd', 'data-label': 'pc-price'}).text
-        prices = int(prices.replace('$', '').replace(',', '')) # removes the $ sign and commas and convert to float
-
+        prices = int(prices.replace('$', '').replace(',', ''))
         beds = extract_text(home, 'pc-meta-beds')
         baths = extract_text(home, 'pc-meta-baths')
         square_feet = extract_text(home, 'pc-meta-sqft')
         acre_lot = extract_text(home, 'pc-meta-sqftlot')
-        more_info_link = home.div.a['href'] # to get the href link for more information on each house
+        more_info_link = home.div.a['href']
         
-
         # Uncomment first if-statement for house prices below the value entered
         # if prices <= price_filter:
-
         # Uncomment second one if you want house prices above the value entered
         if prices >= price_filter:
             houses_list.append({
@@ -64,28 +60,22 @@ def find_houses():
                 'Acre Lot': acre_lot,
                 'More Info Link': more_info_link
             })
-    # Close the driver
     driver.quit()
 
     houses_dataframe = pd.DataFrame(houses_list)
     return houses_dataframe
 
-    
-
-
 if __name__ == '__main__':
     while True:
         df = find_houses()
 
-        # Write tabulate to results.csv
-        with open("results.csv", "w") as f:
+        with open("results.csv", "w") as f: # Write tabulate to results.csv
             f.write(tabulate(df, headers='keys', tablefmt='psql'))
 
-        # Create a bar chart of house prices
-        df.plot(kind='bar', x='Address', y='$Price', colorbar='green' legend=False)
-        plt.xlabel('Address')
-        plt.ylabel('Price')
-        plt.title('House Prices')
+        df.plot(kind='bar', x='Address', y='Price', color='green', legend=False)  # Create a bar chart of house prices
+        plt.xlabel('Address', fontsize=12)
+        plt.ylabel('Price', fontsize=12)
+        plt.title('House Prices', fontsize=14)
         plt.show()
 
         time_wait = 10
