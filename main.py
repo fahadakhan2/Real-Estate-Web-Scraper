@@ -72,19 +72,24 @@ if re.match(location_pattern, location):
 else:
     print('Invalid Location. Please Provide a Correct Location Name')
 
+
 if __name__ == '__main__':
-    while True:
+    should_continue = True
+    while should_continue:
         df = find_houses()
+        if df is not None:
 
-        with open("results.csv", "w") as f: # Write tabulate to results.csv
-            f.write(tabulate(df, headers='keys', tablefmt='psql'))
+            with open("results.csv", "w") as f: # Write tabulate to results.csv
+                f.write(tabulate(df, headers='keys', tablefmt='psql'))
 
-        df.plot(kind='bar', x='Address', y='$Price', color='green', legend=False)  # Create a bar chart of house prices
-        plt.xlabel('Address', fontsize=12)
-        plt.ylabel('$Price', fontsize=12)
-        plt.title('House Prices', fontsize=14)
-        plt.show()
+            df.plot(kind='bar', x='Address', y='$Price', color='green', legend=False)  # Create a bar chart of house prices
+            plt.xlabel('Address', fontsize=12)
+            plt.ylabel('$Price', fontsize=12)
+            plt.title('House Prices', fontsize=14)
+            plt.show()
 
-        time_wait = 10
-        print(f'Waiting {time_wait} minutes...')
-        time.sleep(time_wait * 60)
+            time_wait = 10
+            print(f'Waiting {time_wait} minutes...')
+            time.sleep(time_wait * 60)
+        else:
+            should_continue = False
