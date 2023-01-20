@@ -65,8 +65,10 @@ if re.match(location_pattern, location):
         driver.quit()
 
         houses_dataframe = pd.DataFrame(houses_list)
-        return houses_dataframe
-
+        if houses_dataframe.shape[0] == 0:
+            print("No houses found for the given location for the filtered price.")
+        else:
+            return houses_dataframe
 else:
     print('Invalid Location. Please Provide a Correct Location Name')
 
