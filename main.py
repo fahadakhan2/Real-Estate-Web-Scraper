@@ -9,12 +9,10 @@ import re
 
 
 # Regular expression to check if the input matches the pattern
-location_pattern  = re.compile(r'^[A-Za-z]+_[A-Za-z]{2}$')
-
+location_pattern  = re.compile(r'^[A-Za-z-]+_[A-Za-z]{2}$')
 # Filtration System
-
 while True:
-    print('Enter the location you want to search (e.g. Winnetka_IL):')
+    print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA):')
     location = input('')
 
     if re.match(location_pattern, location):
@@ -26,13 +24,11 @@ while True:
     else:
         print('Invalid Location. Please Provide a Correct Location Name:')
 
-
 def find_houses():
     # Start a web driver
     driver = webdriver.Chrome('--ignore-certificate-errors')
     driver.get('https://www.realtor.com/realestateandhomes-search/{}'.format(location))
     html_text = driver.page_source # Get the HTML source code
-
 
     # Function for extracting text for the variables beds, baths, square_foot, and acre_lot
     def extract_text(home, attr):
@@ -43,7 +39,6 @@ def find_houses():
             return ''
     
     houses_list = [] # For dataframe
-
     soup = BeautifulSoup(html_text, 'lxml')
     homes = soup.find_all('li', class_ = 'jsx-1881802087 component_property-card') # For all home listings on first page
     for home in homes: 
@@ -73,11 +68,12 @@ def find_houses():
             })
     driver.quit()
 
+
     houses_dataframe = pd.DataFrame(houses_list)
     if houses_dataframe.shape[0] == 0:
         print("No houses found for the given location for the filtered price.")
     else:
-        return houses_dataframe
+        return houses_dataframe 
     
 
 
@@ -85,8 +81,8 @@ if __name__ == '__main__':
     should_continue = True
     while should_continue:
         df = find_houses()
+        
         if df is not None:
-
             with open("results.csv", "w") as f: # Write tabulate to results.csv
                 f.write(tabulate(df, headers='keys', tablefmt='psql'))
 
@@ -95,10 +91,13 @@ if __name__ == '__main__':
             plt.ylabel('$Price', fontsize=12)
             plt.title('House Prices', fontsize=14)
             plt.show()
+            print('DONE')
         else:
             should_continue = False
 
-    time_wait = 10
-    print(f'Waiting {time_wait} minutes...')
-    time.sleep(time_wait * 60)
+    
+        
+       
+
+   
 
