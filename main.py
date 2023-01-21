@@ -17,12 +17,14 @@ while True:
     print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA):')
     location = input('')
     if re.match(location_pattern, location):
-        print('Enter the price you want to buy a house (e.g. 1000000 for a one million dollar house):')
+        print('')
+        print('Enter the price you want to buy a house for(e.g. 1000000 for a one million dollar house):')
         price_filter = int(input(''))
         print(f'Retrieving houses over {price_filter}')
         break
     else:
-        print('Invalid Location. Please Provide a Correct Location Name:')
+        print('')
+        print('Invalid Location. Please Provide a Correct Location Name Below')
 
 
 
@@ -85,6 +87,7 @@ def find_houses(pages=1):
         print("No houses found for the given location for the filtered price.")
     else:
         mean_price = np.mean(houses_dataframe['$ Price'])
+        print('')
         print("Average Price of all houses scraped: ","$",mean_price, sep='')
         return houses_dataframe
         

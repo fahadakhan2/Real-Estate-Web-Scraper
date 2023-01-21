@@ -1,16 +1,17 @@
 import unittest
 from main import *
-import re
 
 
 class TestWebScraping(unittest.TestCase):
 
+    # test for the pattern of location name
     def test_location_pattern(self):
         self.assertTrue(re.match(location_pattern, 'Winnetka_IL'))
         self.assertTrue(re.match(location_pattern, 'San-Diego_CA'))
         self.assertFalse(re.match(location_pattern, 'Winnetka_Illinois'))
         self.assertFalse(re.match(location_pattern, 'Winnetka_IL_USA'))
     
+    # tests if function find_houses() returns a list of houses with a price greater than or equal to the price filter, and all the attributes are not empty
     def test_find_houses(self):
         houses = find_houses(1)
         self.assertGreaterEqual(len(houses), 0)
