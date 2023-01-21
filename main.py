@@ -90,7 +90,7 @@ if __name__ == '__main__':
     should_continue = True
     while should_continue:
         df = find_houses(pages=3) # Enter how many pages to scrape
-        print("View results.csv and barchart for results(Close barchart when ready for next scrape.") # Need to close the graph to stop the execution of program
+        print("View results.csv and barchart for results(Close barchart when ready for next scrape).") # Need to close the graph to stop the execution of program
         if df is not None:
             with open("results.csv", "w") as f: # Write tabulate to results.csv
                 f.write(tabulate(df, headers='keys', tablefmt='psql'))
