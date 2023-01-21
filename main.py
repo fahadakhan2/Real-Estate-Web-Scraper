@@ -5,6 +5,7 @@ from tabulate import tabulate
 import matplotlib.pyplot as plt
 import time
 import re
+import numpy as np
 
 
 
@@ -16,7 +17,7 @@ while True:
     print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA):')
     location = input('')
     if re.match(location_pattern, location):
-        print('Enter the price you want to buy a house (e.g. 1000000 for a one million dollar house:')
+        print('Enter the price you want to buy a house (e.g. 1000000 for a one million dollar house):')
         price_filter = int(input(''))
         print(f'Retrieving houses over {price_filter}')
         break
@@ -54,7 +55,7 @@ def find_houses(pages=1):
             square_feet = extract_text(home, 'pc-meta-sqft')
             acre_lot = extract_text(home, 'pc-meta-sqftlot')
             more_info_link = home.div.a['href']
-
+        
             # Uncomment first if-statement for house prices below the value entered
             # if prices <= price_filter:
             # Uncomment second one if you want house prices above the value entered
@@ -62,7 +63,7 @@ def find_houses(pages=1):
                 houses_list.append({
                     'Address': addresses,
                     'Status': status_texts,
-                    '$Price': prices,
+                    '$ Price': prices,
                     'Beds': beds,
                     'Baths': baths,
                     'Square Feet': square_feet,
@@ -83,21 +84,24 @@ def find_houses(pages=1):
     if houses_dataframe.shape[0] == 0:
         print("No houses found for the given location for the filtered price.")
     else:
-        return houses_dataframe 
-
+        mean_price = np.mean(houses_dataframe['$ Price'])
+        print("Average Price of all houses scraped: ","$",mean_price, sep='')
+        return houses_dataframe
+        
 
 if __name__ == '__main__':
     should_continue = True
     while should_continue:
         df = find_houses(pages=3) # Enter how many pages to scrape
+        print('') 
         print("View results.csv and barchart for results(Close barchart when ready for next scrape).") # Need to close the graph to stop the execution of program
         if df is not None:
             with open("results.csv", "w") as f: # Write tabulate to results.csv
                 f.write(tabulate(df, headers='keys', tablefmt='psql'))
-
-            df.plot(kind='bar', x='Address', y='$Price', color='green', legend=False) 
+                
+            df.plot(kind='bar', x='Address', y='$ Price', color='green', legend=False) 
             plt.xlabel('Address', fontsize=12)
-            plt.ylabel('$Price', fontsize=12)
+            plt.ylabel('$ Price', fontsize=12)
             plt.title('House Prices', fontsize=14)
             plt.show()
             
