@@ -26,7 +26,9 @@ while True:
 
 def find_houses():
     # Start a web driver
-    driver = webdriver.Chrome('--ignore-certificate-errors')
+    options = webdriver.ChromeOptions()
+    options.add_argument('--ignore-certificate-errors')
+    driver = webdriver.Chrome(chrome_options=options)
     driver.get('https://www.realtor.com/realestateandhomes-search/{}'.format(location))
     html_text = driver.page_source # Get the HTML source code
 
