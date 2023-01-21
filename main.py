@@ -16,7 +16,7 @@ while True:
     location = input('')
 
     if re.match(location_pattern, location):
-        print('Enter the amount you want to buy a house like this -> 1000000 (for a one million dollar house)')
+        print('Enter the price you want to buy a house (e.g. 1000000 for a one million dollar house:')
         price_filter = int(input(''))
         print(f'Retrieving houses over {price_filter}')
 
@@ -51,7 +51,7 @@ def find_houses():
         square_feet = extract_text(home, 'pc-meta-sqft')
         acre_lot = extract_text(home, 'pc-meta-sqftlot')
         more_info_link = home.div.a['href']
-        
+
         # Uncomment first if-statement for house prices below the value entered
         # if prices <= price_filter:
         # Uncomment second one if you want house prices above the value entered
@@ -68,7 +68,7 @@ def find_houses():
             })
     driver.quit()
 
-
+    # Creating and adding list to dataframe
     houses_dataframe = pd.DataFrame(houses_list)
     if houses_dataframe.shape[0] == 0:
         print("No houses found for the given location for the filtered price.")
@@ -76,12 +76,11 @@ def find_houses():
         return houses_dataframe 
     
 
-
 if __name__ == '__main__':
     should_continue = True
     while should_continue:
         df = find_houses()
-        
+        print("Close graph for next scrape") # Need to close the graph to stop the execution of progr
         if df is not None:
             with open("results.csv", "w") as f: # Write tabulate to results.csv
                 f.write(tabulate(df, headers='keys', tablefmt='psql'))
@@ -91,13 +90,9 @@ if __name__ == '__main__':
             plt.ylabel('$Price', fontsize=12)
             plt.title('House Prices', fontsize=14)
             plt.show()
-            print('DONE')
+            
+            time_wait = 10  # cooldown before next scrape
+            print(f'COOLDOWN: Waiting {time_wait} minutes...')
+            time.sleep(time_wait * 60) 
         else:
             should_continue = False
-
-    
-        
-       
-
-   
-
