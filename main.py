@@ -55,6 +55,10 @@ def find_houses(pages=1):
             beds = extract_text(home, 'pc-meta-beds')
             baths = extract_text(home, 'pc-meta-baths')
             square_feet = extract_text(home, 'pc-meta-sqft')
+            if square_feet:
+                square_feet = int(square_feet.replace('sqft', '').replace(',', ''))
+            else:
+                square_feet = None
             acre_lot = extract_text(home, 'pc-meta-sqftlot')
             more_info_link = home.div.a['href']
         
@@ -87,8 +91,10 @@ def find_houses(pages=1):
         print("No houses found for the given location for the filtered price.")
     else:
         mean_price = np.mean(houses_dataframe['$ Price'])
+        mean_square_feet = np.mean(houses_dataframe['Square Feet'])
         print('')
-        print("Average Price of all houses scraped: ","$",mean_price, sep='')
+        print("Average price of all houses scraped: ","$",mean_price, sep='')
+        print("Average square feet of all houses scraped: ",mean_square_feet,"sqft", sep='')
         return houses_dataframe
         
 
