@@ -3,17 +3,15 @@ from selenium import webdriver
 import pandas as pd
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+import numpy as np
 import time
 import re
-import numpy as np
 
 
 
 
-# Regular expression to check if the input matches the pattern
-location_pattern  = re.compile(r'^[A-Za-z-]+_[A-Za-z]{2}$')
-# Filtration System
-while True:
+location_pattern  = re.compile(r'^[A-Za-z-]+_[A-Za-z]{2}$') # Regular expression to check if the input matches the pattern
+while True: # Filtration System
     print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA, chicago_IL):')
     location = input('')
     if re.match(location_pattern, location):
@@ -27,7 +25,6 @@ while True:
         print('Invalid location. Please provide a correct location name below')
 
 
-
 def find_houses(pages=1):
     options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
@@ -35,8 +32,7 @@ def find_houses(pages=1):
     driver.get('https://www.realtor.com/realestateandhomes-search/{}'.format(location))
     html_text = driver.page_source # Get the HTML source code
     
-    # Function for extracting text for the variables beds, baths, square_foot, and acre_lot
-    def extract_text(home, attr):
+    def extract_text(home, attr): # Function for extracting text for the variables beds, baths, square_foot, and acre_lot
         element = home.find('li', attrs={'class': 'jsx-946479843 prop-meta srp_list', 'data-label': attr})
         if element is not None:
             return element.text
@@ -84,9 +80,7 @@ def find_houses(pages=1):
             driver.quit()
             break
                                              
-
-    # Creating and adding list to dataframe
-    houses_dataframe = pd.DataFrame(houses_list)
+    houses_dataframe = pd.DataFrame(houses_list) # Creating and adding list to dataframe
     if houses_dataframe.shape[0] == 0:
         print("No houses found for the given location and for the filtered price.")
     else:
@@ -105,7 +99,7 @@ if __name__ == '__main__':
         print('') 
         print("View results.csv and barchart for results(Close barchart when ready for next scrape).") # Need to close the graph to stop the execution of program
         if df is not None:
-            with open("results.csv", "w") as f: # Write tabulate to results.csv
+            with open("results.csv", "w") as f:
                 f.write(tabulate(df, headers='keys', tablefmt='psql'))
                 
             df.plot(kind='bar', x='Address', y='$ Price', color='green', legend=False) 
