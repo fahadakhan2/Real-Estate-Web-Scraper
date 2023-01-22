@@ -14,7 +14,7 @@ import numpy as np
 location_pattern  = re.compile(r'^[A-Za-z-]+_[A-Za-z]{2}$')
 # Filtration System
 while True:
-    print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA):')
+    print('Enter the location you want to search (e.g. Winnetka_IL, San-Diego_CA, chicago_IL):')
     location = input('')
     if re.match(location_pattern, location):
         print('')
@@ -24,7 +24,7 @@ while True:
         break
     else:
         print('')
-        print('Invalid Location. Please Provide a Correct Location Name Below')
+        print('Invalid location. Please provide a correct location name below')
 
 
 
@@ -88,7 +88,7 @@ def find_houses(pages=1):
     # Creating and adding list to dataframe
     houses_dataframe = pd.DataFrame(houses_list)
     if houses_dataframe.shape[0] == 0:
-        print("No houses found for the given location for the filtered price.")
+        print("No houses found for the given location and for the filtered price.")
     else:
         mean_price = np.mean(houses_dataframe['$ Price'])
         mean_square_feet = np.mean(houses_dataframe['Square Feet'])
