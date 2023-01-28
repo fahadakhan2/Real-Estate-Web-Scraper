@@ -6,7 +6,7 @@ The tool features a filtration system that filters the location and price of the
 
 The information retrieved includes addresses, status texts (for availability), prices, number of beds, baths, square feet, acre lot, and a more info link that can take you straight to the specific listing on Realtor.com where you can view all extra information. This information is then stored in a pandas dataframe for further analysis.
 
-The program provides data analysis through the scraped data in tabulated format in a CSV file called "results". Additionally, a bar chart is generated that compares the addresses to their respective prices in the location specified by the user.
+The program provides data analysis through the scraped data in tabulated format in a CSV file called "results". Additionally, a bar chart is generated that compares the addresses to their respective prices in the location specified by the user. Extra Information about the house listings including the mean price and square feet of the real estate scrape is outputted into the terminal.
 
 To prevent overloading the website with requests and to avoid getting blocked, the tool includes a cooldown period before the next scrape.
 
