@@ -84,8 +84,8 @@ def find_houses(pages=1):
     if houses_dataframe.shape[0] == 0:
         print("No houses found for the given location and for the filtered price.")
     else:
-        mean_price = np.mean(houses_dataframe['$ Price'])
-        mean_square_feet = np.mean(houses_dataframe['Square Feet'])
+        mean_price = round(np.mean(houses_dataframe['$ Price']))
+        mean_square_feet = round(np.mean(houses_dataframe['Square Feet']))
         print('')
         print("Average price of all houses scraped: ","$",mean_price, sep='')
         print("Average square feet of all houses scraped: ",mean_square_feet,"sqft", sep='')
