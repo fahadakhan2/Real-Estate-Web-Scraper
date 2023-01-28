@@ -44,7 +44,7 @@ def find_houses(pages=1):
         soup = BeautifulSoup(html_text, 'lxml')
         homes = soup.find_all('li', class_ = 'jsx-1881802087 component_property-card') # For all home listings on first page
         for home in homes: 
-            addresses = home.find('div', class_ = 'jsx-11645185 address ellipsis srp-page-address srp-address-redesign').text
+            addresses = home.find('div', class_ = 'jsx-1982357781 address ellipsis srp-page-address srp-address-redesign').text
             status_texts = home.find('span', class_ = 'jsx-3853574337 statusText').text
             prices = home.find('span', attrs={'class': 'Price__Component-rui__x3geed-0 gipzbd', 'data-label': 'pc-price'}).text
             prices = int(prices.replace('$', '').replace(',', ''))
